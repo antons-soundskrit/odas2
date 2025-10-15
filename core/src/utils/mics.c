@@ -13,6 +13,7 @@ static mics_t * mics_sc16_demo_array(void);
 static mics_t * mics_sc16f(void);
 static mics_t * mics_vibeus_circular(void);
 static mics_t * mics_soundskrit_mug(void);
+static mics_t * mics_lumens(void);
 
 mic_t mic_cst(const xyz_t position, const xyz_t direction, const mic_pattern_t pattern) {
 
@@ -77,6 +78,8 @@ mics_t * mics_construct(const mics_hardware_t hardware) {
             return mics_vibeus_circular();
         case MICS_HARDWARE_SOUNDSKRIT_MUG:
             return mics_soundskrit_mug();
+        case MICS_HARDWARE_LUMENS:
+            return mics_lumens();
     }
 
     odas2_set_error_number(ODAS2_ERROR_MICS_HARDWARE_UNKNOWN);
@@ -248,3 +251,24 @@ static mics_t * mics_soundskrit_mug(void) {
     return obj;
 
 }
+
+static mics_t * mics_lumens(void) {
+
+    mics_t* obj = (mics_t*)malloc(sizeof(mics_t));
+
+    obj->num_mics = 8;
+    obj->mics = (mic_t*)malloc(sizeof(mic_t) * obj->num_mics);
+
+    obj->mics[0] = mic_cst((xyz_t) { .x = +0.00000f, .y = +0.0000f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[1] = mic_cst((xyz_t) { .x = +0.16000f, .y = +0.0000f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[2] = mic_cst((xyz_t) { .x = +0.20000f, .y = +0.0000f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[3] = mic_cst((xyz_t) { .x = +0.20000f, .y = +0.0400f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[4] = mic_cst((xyz_t) { .x = +0.20000f, .y = +0.2000f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[5] = mic_cst((xyz_t) { .x = +0.00000f, .y = +0.2000f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[6] = mic_cst((xyz_t) { .x = +0.16000f, .y = +0.0400f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_CARDIOID);
+    obj->mics[7] = mic_cst((xyz_t) { .x = +0.16000f, .y = +0.0450f, .z = +0.000f }, (xyz_t) { .x = +0.000f, .y = +0.000f, .z = +1.000f }, MIC_PATTERN_OMNIDIRECTIONAL);
+
+    return obj;
+
+}
+

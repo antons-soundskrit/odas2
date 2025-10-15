@@ -172,3 +172,27 @@ int msgout_write_tdoas(msgout_t * obj, const tdoas_t * tdoas) {
     return 0;
 
 }
+
+
+int msgout_write_points(msgout_t* obj, const points_t* points) {
+    CHECK_FPRINTF(fprintf(obj->file_pointer, "{"));
+    CHECK_FPRINTF(fprintf(obj->file_pointer, "\"type\":\"points\""));
+    CHECK_FPRINTF(fprintf(obj->file_pointer, ","));
+    CHECK_FPRINTF(fprintf(obj->file_pointer, "\"points\":["));
+
+    for (unsigned int index_point = 0; index_point < points->num_points; index_point++) {
+        CHECK_FPRINTF(fprintf(obj->file_pointer, "{\"x\": %1.3f, \"y\": %1.3f, \"z\": %1.3f}",
+            points->points[index_point].x,
+            points->points[index_point].y,
+            points->points[index_point].z));
+        if (index_point != (points->num_points - 1)) {
+            CHECK_FPRINTF(fprintf(obj->file_pointer, ","));
+        }
+    }
+
+    CHECK_FPRINTF(fprintf(obj->file_pointer, "]"));
+    CHECK_FPRINTF(fprintf(obj->file_pointer, "}\n"));
+    fflush(obj->file_pointer);
+
+    return 0;
+}

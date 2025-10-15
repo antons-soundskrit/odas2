@@ -35,11 +35,11 @@ int main(int argc, char * argv[]) {
     // Parameters
     //
 
-    const unsigned int      num_channels      = 4;
+    const unsigned int      num_channels      = 8;
     const unsigned int      num_shifts        = 128;
     const unsigned int      num_samples       = 512;
     const unsigned int      num_bins          = 257;
-    const unsigned int      sample_rate       = 16000;
+    const unsigned int      sample_rate       = 48000;
     const float             sound_speed       = 343.0f;
     const float             alpha             = 0.5f;
     const unsigned int      num_sources       = 1;
@@ -47,7 +47,7 @@ int main(int argc, char * argv[]) {
     const unsigned int      num_tracks        = 3;
     const unsigned int      num_pasts         = 40;
     const char              method[]          = "gcc";
-    const mics_hardware_t   micarray          = MICS_HARDWARE_RESPEAKER_USB_4;
+    const mics_hardware_t   micarray          = MICS_HARDWARE_LUMENS;
     const points_geometry_t geometry          = POINTS_GEOMETRY_HALFSPHERE;
     const unsigned int      num_points        = 1000;
 
@@ -100,6 +100,10 @@ int main(int argc, char * argv[]) {
     msgout_t * msgout = msgout_construct("/dev/stdout");
     ODAS2_CHECK_PTR(msgout);
 
+    dsf->delete_decay = 0.995f;
+
+    ODAS2_CHECK_CODE(msgout_write_points(msgout, points));
+
     //
     // Process
     //
@@ -120,6 +124,8 @@ int main(int argc, char * argv[]) {
         }
 
         ODAS2_CHECK_CODE(ssl_process(ssl, tdoas, doas_potential, NULL));
+        ODAS2_CHECK_CODE(msgout_write_doas(msgout, doas_potential));
+
         ODAS2_CHECK_CODE(sst_process(sst, dsf, doas_potential, doas_tracked));
 
         ODAS2_CHECK_CODE(msgout_write_doas(msgout, doas_tracked));

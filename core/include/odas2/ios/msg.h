@@ -7,6 +7,7 @@
 #include "../signals/hops.h"
 #include "../signals/masks.h"
 #include "../signals/tdoas.h"
+#include "../utils/points.h"
 
 #include <stdio.h>
 
@@ -31,5 +32,7 @@ int msgout_write_masks(msgout_t * obj, const masks_t * masks);
 int msgout_write_doas(msgout_t * obj, const doas_t * doas);
 
 int msgout_write_tdoas(msgout_t * obj, const tdoas_t * tdoas); 
+
+int msgout_write_points(msgout_t* obj, const points_t * points);
 
 #endif // __BIN_H
